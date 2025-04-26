@@ -1,0 +1,23 @@
+title: Multiple Failed Logins from Same IP
+id: bf97a882-89f0-4d93-847e-cd7d556b1234
+description: Detects multiple failed login attempts from a single IP, indicating a potential brute force attack.
+status: experimental
+author: tmoooe
+date: 2025/04/26
+logsource:
+  product: webserver
+  service: apache
+detection:
+  selection:
+    status: 401
+  condition: selection | count(src_ip) > 5
+fields:
+  - src_ip
+  - uri
+  - user_agent
+falsepositives:
+  - User mistyping password repeatedly
+level: medium
+tags:
+  - attack.credential_access
+  - attack.t1110
